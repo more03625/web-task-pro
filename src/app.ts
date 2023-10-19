@@ -4,6 +4,7 @@ import { seoRouter } from './routes';
 import cors from 'cors';
 import dotenv from 'dotenv'
 import path from 'path';
+import semver from 'semver';
 
 // Create an Express application
 const app = express();
@@ -13,6 +14,11 @@ app.use(cors());
 const result = dotenv.config({ path: path.resolve(__dirname, `../env/.env.${process.env.NODE_ENV}`).trim() });
 if (result.error) {
     throw new Error(`Error loading .env file: ${result.error}`);
+}
+
+if (!semver.satisfies(process.version, `>=${process.env.NODE_VERSION}`)) {
+    console.error(`Required Node.js version is ${process.env.NODE_VERSION}, but you are using ${process.version}.`);
+    process.exit(1);
 }
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
