@@ -1,11 +1,11 @@
 import express from 'express';
 import { response } from '../utils';
-import { getSeo } from '../schemas'; // Import the yup schema you created
+import { seoSchema } from '../schemas'; // Import the yup schema you created
 import validate from '../utils/validator';
 
 const server = express.Router();
 
-server.get('/', validate(getSeo), async (req, res, next) => {
+server.get('/', validate(seoSchema.getSeo), async (req, res) => {
     try {
 
         const pageUrl = req.body.pageUrl;

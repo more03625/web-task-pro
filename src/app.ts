@@ -1,12 +1,13 @@
 // Import required modules
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { seoRouter } from './routes';
 import cors from 'cors';
 import dotenv from 'dotenv'
 import path from 'path';
 import semver from 'semver';
+import 'esm';
+import packageJson from '../package.json';
 
-// Create an Express application
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -16,24 +17,30 @@ if (result.error) {
     throw new Error(`Error loading .env file: ${result.error}`);
 }
 
-if (!semver.satisfies(process.version, `>=${process.env.NODE_VERSION}`)) {
-    console.error(`Required Node.js version is ${process.env.NODE_VERSION}, but you are using ${process.version}.`);
+if (!semver.satisfies(process.version, `>=${packageJson.engines.node}`)) {
+    console.error(`Required Node.js version is ${packageJson.engines.node}, but you are using ${process.version}.`);
     process.exit(1);
 }
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.ip);
     res.send({
         success: true,
         message: "Welcome to web-task-pro, helping you to eliminate common repetitive tasks!"
     });
+    return next()
 });
 
 app.get('/ping', (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.ip);
     res.send('Thank you for pinging User Management!');
+    return next()
 })
 
 app.get('/health-check', (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.ip);
     res.send('Health check working as it it!');
+    return next()
 });
 
 app.use('/api/seo', seoRouter);

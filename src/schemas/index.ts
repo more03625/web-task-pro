@@ -1,1 +1,1 @@
-export { getSeo, seoSchema } from './seo'
+export { default as seoSchema } from './seo'

@@ -31,7 +31,7 @@ const getSeo = yup.object({
         siteName: yup.string().required().trim(),
     })
 });
-export {
+export default {
     seoSchema,
     getSeo
 };
