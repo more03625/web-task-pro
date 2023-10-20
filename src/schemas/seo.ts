@@ -1,37 +1,44 @@
 import * as yup from 'yup';
 
-
-const seoSchema = yup.object().shape({
-    id: yup.number().integer(),
-    ogSiteName: yup.string().trim().required(),
-    ogType: yup.string().trim(),
-    ogUrl: yup.string().trim(),
-    ogTitle: yup.string().trim().required(),
-    ogDescription: yup.string().trim().required(),
-    ogKeywords: yup.string().trim(),
-    ogImage: yup.number().integer(),
-    ogImageUrl: yup.string().trim(),
-    ogImageAlt: yup.string().trim(),
-    ogImageType: yup.string().trim(),
-    ogImageWidth: yup.string().trim(),
-    ogImageHeight: yup.string().trim(),
-    twitterCard: yup.string().trim(),
-    twitterTitle: yup.string().trim(),
-    twitterDescription: yup.string().trim(),
-    twitterImage: yup.string().trim(),
-    twitterImageAlt: yup.string().trim(),
-    canonicalURL: yup.string().trim(),
-    robots: yup.string().trim().required(),
-    googleBot: yup.string().trim().required(),
+const addSeo = yup.object().shape({
+    siteUrl: yup.string().url().trim().required(),
+    canonicalURL: yup.string().url().trim(),
+    robots: yup.string().trim(),
+    googleBot: yup.string().trim(),
+    openGraph: yup.object({
+        type: yup.string().trim().required(),
+        url: yup.string().url().trim().required(),
+        title: yup.string().trim().required(),
+        description: yup.string().trim().required(),
+        keywords: yup.string().trim().required(),
+        image: yup.object({
+            url: yup.string().url().trim().required(),
+            alt: yup.string().trim().required(),
+            type: yup.string().trim().required(),
+            width: yup.string().trim().required(),
+            height: yup.string().trim().required(),
+        }),
+    }).required(),
+    twitter: yup.object({
+        card: yup.string().trim().required(),
+        title: yup.string().trim().required(),
+        description: yup.string().trim().required(),
+        image: yup.object({
+            url: yup.string().url().trim().required(),
+            alt: yup.string().trim().required(),
+            type: yup.string().trim().required(),
+            width: yup.string().trim().required(),
+            height: yup.string().trim().required(),
+        }),
+    }).required(),
 });
-
 const getSeo = yup.object({
     body: yup.object({
-        pageUrl: yup.string().url().required().trim(),
-        siteName: yup.string().required().trim(),
+        pageUrl: yup.string().url().trim(),
+        siteName: yup.string().trim(),
     })
 });
 export default {
-    seoSchema,
+    addSeo,
     getSeo
 };

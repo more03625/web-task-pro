@@ -1,12 +1,16 @@
 // Import required modules
 import express, { Request, Response, NextFunction } from 'express';
-import { seoRouter } from './routes';
 import cors from 'cors';
 import dotenv from 'dotenv'
 import path from 'path';
 import semver from 'semver';
+import mongoose from 'mongoose';
 import 'esm';
+
 import packageJson from '../package.json';
+import { connection } from './db';
+import { seoRouter } from './routes';
+import { IDbConnectionOptions } from './interfaces';
 
 const app = express();
 app.use(express.json());
@@ -21,6 +25,22 @@ if (!semver.satisfies(process.version, `>=${packageJson.engines.node}`)) {
     console.error(`Required Node.js version is ${packageJson.engines.node}, but you are using ${process.version}.`);
     process.exit(1);
 }
+
+mongoose.set('debug', true);
+const connectToDB = async (options: IDbConnectionOptions) => {
+    try {
+        await connection(options);
+    } catch (error) {
+        console.log('connectToDB error', error);
+    }
+}
+const connectionOptions: IDbConnectionOptions = {
+    dbName: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+};
+
+connectToDB(connectionOptions);
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     console.log(req.ip);
