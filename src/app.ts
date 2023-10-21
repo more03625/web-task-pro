@@ -11,6 +11,7 @@ import packageJson from '../package.json';
 import { connection } from './db';
 import { seoRouter } from './routes';
 import { IDbConnectionOptions } from './interfaces';
+import { errorMiddleware } from './utils';
 
 const app = express();
 app.use(express.json());
@@ -42,7 +43,7 @@ const connectionOptions: IDbConnectionOptions = {
 
 connectToDB(connectionOptions);
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
+app.get('/', (req: Request, res: Response, next: NextFunction): void => {
     console.log(req.ip);
     res.send({
         success: true,
@@ -51,19 +52,21 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
     return next()
 });
 
-app.get('/ping', (req: Request, res: Response, next: NextFunction) => {
+app.get('/ping', (req: Request, res: Response, next: NextFunction): void => {
     console.log(req.ip);
     res.send('Thank you for pinging User Management!');
     return next()
 })
 
-app.get('/health-check', (req: Request, res: Response, next: NextFunction) => {
+app.get('/health-check', (req: Request, res: Response, next: NextFunction): void => {
     console.log(req.ip);
     res.send('Health check working as it it!');
     return next()
 });
 
 app.use('/api/seo', seoRouter);
+
+app.use(errorMiddleware);
 
 const port = process.env.APP_PORT || 8080;
 const NODE_ENV = process.env.NODE_ENV || 'dev';

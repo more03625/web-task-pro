@@ -70,6 +70,10 @@ const twitterSchema = new mongoose.Schema({
 });
 
 const seoSchema = new mongoose.Schema({
+    pageUrl: {
+        type: String,
+        required: true,
+    },
     siteUrl: {
         type: String,
         required: true,

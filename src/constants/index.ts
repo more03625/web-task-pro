@@ -1,0 +1,1 @@
+export { seoMessages } from './messages'

@@ -1,33 +1,44 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { response } from '../utils';
 import { seoSchema } from '../schemas'; // Import the yup schema you created
 import { validate } from '../utils';
-import { seoModel } from '../models';
+import { seoController } from '../controllers';
 
 const server = express.Router();
 
-server.get('/', validate(seoSchema.getSeo), async (req: Request, res: Response): Promise<Record<string, any>> => {
+server.get('/', validate(seoSchema.getSeo), async (req: Request, res: Response, next: NextFunction): Promise<Record<string, any> | void> => {
     try {
-        const pageUrl = req.body.pageUrl;
-        const siteName = req.body.siteName;
-
-        const result = {
-            success: true,
-            message: 'Welcome to the home of SEO!',
-            data: { pageUrl, siteName }
-        };
+        const result = await seoController.getSeo(req);
         return response.send(result, res);
     } catch (err: any) {
-        return response.internalServerError(err, res);
+        return next(err);
     }
 });
 
-server.post('/', validate(seoSchema.addSeo), async (req: Request, res: Response): Promise<Record<string, any>> => {
+server.post('/', validate(seoSchema.addSeo), async (req: Request, res: Response, next: NextFunction): Promise<Record<string, any> | void> => {
     try {
-        const result = await seoModel.create(req.body);
+        const result = await seoController.addSeo(req);
         return response.send(result, res);
     } catch (err) {
-        return response.internalServerError(err, res);
+        return next(err);
+    }
+});
+
+server.put('/', validate(seoSchema.updateSeo), async (req: Request, res: Response, next: NextFunction): Promise<Record<string, any> | void> => {
+    try {
+        const result = await seoController.updateSeo(req);
+        return response.send(result, res);
+    } catch (err) {
+        return next(err);
+    }
+});
+
+server.delete('/', validate(seoSchema.deleteSeo), async (req: Request, res: Response, next: NextFunction): Promise<Record<string, any> | void> => {
+    try {
+        const result = await seoController.deleteSeo(req);
+        return response.send(result, res);
+    } catch (err) {
+        return next(err);
     }
 });
 

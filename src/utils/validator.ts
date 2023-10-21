@@ -1,12 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import response from './response';
 
-const validate = (schema: any) => async (req: Request, res: Response, next: NextFunction) => {
+const validate = (schema: any, path: string = 'body') => async (req: Request, res: Response, next: NextFunction) => {
     try {
-        await schema.validate(req.body);
+        console.log(res.status, path);
+
+        const obj = { body: req.body, params: req.params, query: req.query }
+        await schema.validate(obj, { abortEarly: true });
         return next();
     } catch (err: any) {
-        return response.badRequest({ ...err, status: 400 }, res)
+        return next(err);
     }
 };
 
