@@ -2,7 +2,7 @@
   "name": "web-task-pro",
   "version": "1.0.0",
   "description": "web-task-pro is the microservice, where you don't have to write code for repetitive tasks such as Adding SEO, Adding Banners & Deleting them on time, Adding informational pages such as About Us.",
-  "main": "index.js",
+  "main": "src/app.ts",
   "scripts": {
     "start": "node dist/app.js",
     "dev": "set NODE_ENV=dev && nodemon --exec ts-node src/app.ts",
@@ -10,6 +10,7 @@
     "staging": "set NODE_ENV=staging && nodemon --exec ts-node src/app.ts",
     "prod": "set NODE_ENV=prod && nodemon --exec ts-node src/app.ts",
     "build": "tsc",
+    "create-env": "node project-setup/create-env.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
