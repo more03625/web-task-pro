@@ -1,1 +1,1 @@
-export { seoMessages } from './messages'
+export { t } from './messages'
