@@ -2,10 +2,11 @@ import { Request } from 'express';
 
 import { seoModel } from "../models";
 import { response } from "../utils";
+import { t } from '../constants';
+// import { tWithDefaultLocale } from '../constants/messages/message';
 
 const getSeo = async (req: Request) => {
     try {
-
         const query: { [key: string]: string } = {};
 
         if (req.query.siteUrl) {
@@ -25,11 +26,7 @@ const getSeo = async (req: Request) => {
 
         const count = await seoModel.countDocuments(query);
         const result = await seoModel.find(query).skip(skip).limit(limit);
-        if (result) {
-            return { count, result }
-        } else {
-            return response.notFound('There are no SEO Entries for the used filters!')
-        }
+        return { count, result }
     } catch (err) {
         return response.internalServerError(err);
     }
@@ -39,7 +36,7 @@ const addSeo = async (req: Request) => {
     try {
         const isExists = await seoModel.findOne({ siteUrl: req.body.siteUrl, pageUrl: req.body.pageUrl });
         if (isExists) {
-            return response.conflict('Seo already exist with this URL!');
+            return response.conflict(t('ALREADY_EXIST', req.headers));
         }
 
         return await seoModel.create(req.body);
@@ -55,7 +52,7 @@ const updateSeo = async (req: Request) => {
         if (isExists) {
             return await seoModel.updateOne(where, req.body);
         }
-        return response.notFound('Unable to find this SEO!');
+        return response.notFound(t('NOT_FOUND', req.headers));
     } catch (err) {
         return response.internalServerError(err);
     }
@@ -71,11 +68,11 @@ const deleteSeo = async (req: Request) => {
         if (isExists) {
             const result = await seoModel.deleteOne(where, req.body);
             if (result.acknowledged) {
-                return { message: "Seo has been deleted successfully!" }
+                return { message: t('SEO_DELETE_SUCCESS', req.headers) }
             }
         }
 
-        return response.notFound('Unable to find this SEO!');
+        return response.notFound(t('NOT_FOUND', req.headers));
     } catch (err) {
         return response.internalServerError(err);
     }
