@@ -1,5 +1,5 @@
 interface IBanner {
-    _id: string,
+    id: string,
     siteUrl: string,
     pageUrl: string,
     position: string,
@@ -9,4 +9,8 @@ interface IBanner {
     endDate: number, // Unix Timestamp
     createdAt: number, // Unix Timestamp
     updatedAt: number, // Unix Timestamp
+}
+
+export {
+    IBanner
 }

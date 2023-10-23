@@ -4,6 +4,9 @@ interface IErrorMessage {
     SEO_DELETE_SUCCESS: string,
     BANNER_NOT_FOUND: string,
     BANNER_DELETE_SUCCESS: string,
+    PAGE_NOT_FOUND: string,
+    PAGE_DELETE_SUCCESS: string,
+    PAGE_ALREADY_EXIST: string,
 }
 
 interface ILanguageMessages {
