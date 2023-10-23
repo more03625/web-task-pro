@@ -9,13 +9,15 @@ import 'esm';
 
 import packageJson from '../package.json';
 import { connection } from './db';
-import { seoRouter } from './routes';
+import { seoRouter, bannerRouter } from './routes';
 import { IDbConnectionOptions } from './interfaces';
 import { errorMiddleware } from './utils';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+process.env.TZ = process.env.TIME_ZONE || "America/New_York"
 
 const result = dotenv.config({ path: path.resolve(__dirname, `../env/.env.${process.env.NODE_ENV}`).trim() });
 if (result.error) {
@@ -35,6 +37,7 @@ const connectToDB = async (options: IDbConnectionOptions) => {
         console.log('connectToDB error', error);
     }
 }
+
 const connectionOptions: IDbConnectionOptions = {
     dbName: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
@@ -65,6 +68,7 @@ app.get('/health-check', (req: Request, res: Response, next: NextFunction): void
 });
 
 app.use('/api/seo', seoRouter);
+app.use('/api/banners', bannerRouter);
 
 app.use(errorMiddleware);
 

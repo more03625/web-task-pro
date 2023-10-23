@@ -107,11 +107,11 @@ const seoSchema = new mongoose.Schema({
         default: {},
     },
     createdAt: {
-        type: Date,
+        type: Number,
         default: Date.now,
     },
     updatedAt: {
-        type: Date,
+        type: Number,
         default: Date.now,
     },
 });
