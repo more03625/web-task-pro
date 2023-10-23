@@ -9,7 +9,7 @@ import 'esm';
 
 import packageJson from '../package.json';
 import { connection } from './db';
-import { seoRouter, bannerRouter } from './routes';
+import { seoRouter, bannerRouter, pageRouter } from './routes';
 import { IDbConnectionOptions } from './interfaces';
 import { errorMiddleware } from './utils';
 
@@ -69,6 +69,7 @@ app.get('/health-check', (req: Request, res: Response, next: NextFunction): void
 
 app.use('/api/seo', seoRouter);
 app.use('/api/banners', bannerRouter);
+app.use('/api/pages', pageRouter);
 
 app.use(errorMiddleware);
 
