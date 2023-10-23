@@ -3,7 +3,10 @@ import * as yup from 'yup';
 const getSeo = yup.object({
     query: yup.object({
         pageUrl: yup.string().url().trim(),
-        siteUrl: yup.string().url().trim(),
+        siteUrl: yup.string().matches(
+            /^(https:\/\/[\w.-]+)\/?$/i,
+            'Site URL must be in the format https://google.com (no trailing slash)'
+        ).trim(),
         page: yup.number(),
         limit: yup.number(),
     })
@@ -14,7 +17,7 @@ const addSeo = yup.object({
         siteUrl: yup.string().matches(
             /^(https:\/\/[\w.-]+)\/?$/i,
             'Site URL must be in the format https://google.com (no trailing slash)'
-        ).required(),
+        ).trim().required(),
         pageUrl: yup.string().url().trim().required(),
         canonicalURL: yup.string().url().trim(),
         robots: yup.string().trim(),
