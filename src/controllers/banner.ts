@@ -15,6 +15,14 @@ const get = async (req: Request) => {
             query.pageUrl = req.query.pageUrl.toString();
         }
 
+        if (req.query.position) {
+            query.position = req.query.position.toString();
+        }
+
+        if (req.query.isActive) {
+            query.isActive = req.query.isActive.toString();
+        }
+
         const page = parseInt(req.query.page as string) || 1;
         const perPage = parseInt(req.query.perPage as string) || 10;
 

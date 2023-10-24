@@ -22,6 +22,7 @@ const addSeo = yup.object({
         canonicalURL: yup.string().url().trim(),
         robots: yup.string().trim(),
         googleBot: yup.string().trim(),
+        isActive: yup.boolean().required(),
         openGraph: yup.object({
             type: yup.string().trim().required(),
             url: yup.string().url().trim().required(),

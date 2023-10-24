@@ -37,6 +37,10 @@ const bannerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
         default: {},
     },
+    isActive: {
+        type: String,
+        required: true,
+    },
     createdAt: {
         type: Number,
         default: Date.now,

@@ -2,8 +2,8 @@ interface IPage {
     id: string,
     siteUrl: string,
     name: string,
+    isActive: Boolean,
     description: string,
-    isActive: boolean,
     createdAt: number, // Unix Timestamp
     updatedAt: number, // Unix Timestamp
 }
