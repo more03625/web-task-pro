@@ -11,11 +11,12 @@ import packageJson from '../package.json';
 import { connection } from './db';
 import { seoRouter, bannerRouter, pageRouter } from './routes';
 import { IDbConnectionOptions } from './interfaces';
-import { errorMiddleware } from './utils';
+import { errorMiddleware, middleware } from './utils';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(middleware);
 
 process.env.TZ = process.env.TIME_ZONE || "America/New_York"
 
@@ -50,7 +51,7 @@ app.get('/', (req: Request, res: Response, next: NextFunction): void => {
     console.log(req.ip);
     res.send({
         success: true,
-        message: "Welcome to web-task-pro, helping you to eliminate common repetitive tasks!"
+        message: "Welcome to web-task-pro, helping you to eliminate common repetitive tasks!",
     });
     return next()
 });
