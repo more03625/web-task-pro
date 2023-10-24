@@ -22,16 +22,14 @@ const trackUser = (req: Request, res: Response) => {
 
     const uaParserResult = uaParser.getResult();
 
-    console.log("req.headers.referer ==> ", req.headers);
-
     // Prepare a data Object
     const data = {
         shortId: shortId,
-        demographic: { ...uaParserResult },
-        referrers: req.headers.referer,
+        referer: req.headers.referer,
         ipAddress,
-        geolocation,
         timestamp: new Date().toISOString(),
+        demographic: { ...uaParserResult },
+        geolocation,
     };
 
     return JSON.stringify(data);
