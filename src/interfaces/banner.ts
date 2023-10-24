@@ -3,6 +3,7 @@ interface IBanner {
     siteUrl: string,
     pageUrl: string,
     position: string,
+    isActive: Boolean,
     imageUrl: string,
     destinationUrl: string,
     startDate: number, // Unix Timestamp

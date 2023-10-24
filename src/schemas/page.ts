@@ -18,9 +18,9 @@ const commonFields = {
         'Site URL must be in the format https://google.com (no trailing slash)'
     ).trim(),
     pageUrl: yup.string().url().trim(),
+    isActive: yup.boolean().required(),
     name: yup.string().required().trim(),
     description: yup.string().required().trim(),
-    isActive: yup.boolean().required(),
 };
 
 const add = yup.object({

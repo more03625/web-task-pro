@@ -21,6 +21,7 @@ const commonFields = {
     position: yup.string().oneOf(['top', 'center', 'bottom']).required(),
     imageUrl: yup.string().url().trim().required(),
     destinationUrl: yup.string().url().trim().required(),
+    isActive: yup.boolean().required(),
     startDate: yup
         .mixed()
         .required('Start date is required')

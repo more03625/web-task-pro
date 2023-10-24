@@ -17,6 +17,10 @@ const getSeo = async (req: Request) => {
             query.pageUrl = req.query.pageUrl.toString();
         }
 
+        if (req.query.isActive) {
+            query.isActive = req.query.isActive.toString();
+        }
+
         // Calculate skip and limit for pagination
         const page = parseInt(req.query.page as string) || 1;
         const perPage = parseInt(req.query.perPage as string) || 10;
