@@ -79,4 +79,4 @@ const NODE_ENV = process.env.NODE_ENV || 'dev';
 
 app.listen(port, () => {
     console.log(`Running PORT ${port} on ${NODE_ENV}`);
-})
+});

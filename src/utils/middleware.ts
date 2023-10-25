@@ -2,42 +2,38 @@ import geoIp from "geoip-lite";
 import UAParser from 'ua-parser-js';
 
 import { NextFunction, Request, Response } from 'express';
+import { trackerController } from "../controllers";
 
-const trackUser = (req: Request, res: Response) => {
-    console.log(res.addListener);
+const trackUser = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        console.log(res.addListener);
+        // Intercept the incoming request here
+        const uaParser = new UAParser();
 
-    // Intercept the incoming request here
-    const uaParser = new UAParser();
+        const pageUrl = req.url.substring(1);
+        const ipAddress = req.headers['x-forwarded-for']?.toString() || req.connection.remoteAddress?.toString();
+        const geoLocation = ipAddress ? geoIp.lookup(ipAddress.toString()) : '';
+        const userAgent = req.headers['user-agent'] || '';
+        uaParser.setUA(userAgent);
+        const uaParserResult = uaParser.getResult();
 
-    const shortId = req.url.substring(1);
+        // Prepare a data Object
+        const data = {
+            pageUrl: pageUrl || '',
+            referer: req.headers.referer || '',
+            ipAddress: ipAddress || '',
+            visitedAt: Date.now(),
+            demoGraphic: uaParserResult,
+            geoLocation: geoLocation || {},
+        };
 
-    // Get the user's IP address
-    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-    const geolocation = ipAddress ? geoIp.lookup(ipAddress.toString()) : '';
-
-    const userAgent = req.headers['user-agent'] || '';
-
-    uaParser.setUA(userAgent);
-
-    const uaParserResult = uaParser.getResult();
-
-    // Prepare a data Object
-    const data = {
-        shortId: shortId,
-        referer: req.headers.referer,
-        ipAddress,
-        timestamp: new Date().toISOString(),
-        demographic: { ...uaParserResult },
-        geolocation,
-    };
-
-    return JSON.stringify(data);
+        return trackerController.logUserInfo(data)
+    } catch (error) {
+        return next();
+    }
 }
 const middleware = (req: Request, res: Response, next: NextFunction): void => {
-    const trackingResponse = trackUser(req, res);
-    console.log('trackingResponse ====> ', trackingResponse);
-
+    trackUser(req, res, next);
     next();
 }
 
